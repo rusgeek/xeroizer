@@ -23,6 +23,7 @@ module Xeroizer
     record :ManualJournal
     record :Organisation
     record :Payment
+    record :Receipt
     record :TaxRate
     record :TrackingCategory
     record :BankTransaction

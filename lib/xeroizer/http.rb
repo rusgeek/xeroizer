@@ -172,6 +172,7 @@ module Xeroizer
         case(request_url)
           when /Invoices/ then raise InvoiceNotFoundError.new("Invoice not found in Xero.")
           when /CreditNotes/ then raise CreditNoteNotFoundError.new("Credit Note not found in Xero.")
+          when /Receipts/ then raise ReceiptNotFoundError.new("Receipt not found in Xero.")
           else raise ObjectNotFound.new(request_url)
         end
       end
