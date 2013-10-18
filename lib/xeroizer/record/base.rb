@@ -58,7 +58,13 @@ module Xeroizer
         end
 
         def non_calculated_attributes
-          attributes.reject {|name| self.class.fields[name][:calculated] }
+          attributes.reject do |name| 
+          begin
+            self.class.fields[name][:calculated] 
+          rescue => e
+            raise "#{name}: #{e}"
+          end 
+          end
         end
 
         def attributes=(new_attributes)

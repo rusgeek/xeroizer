@@ -25,24 +25,24 @@ module Xeroizer
     class Receipt < Base
       
       RECEIPT_STATUS = {
-        'AUTHORISED' =>       'Receipt has been authorised in the Xero app'
-        'DRAFT' =>            'A draft receipt (default)'
-        'SUBMITTED' =>        'Receipt has been submitted as part of an expense claim'
+        'AUTHORISED' =>       'Receipt has been authorised in the Xero app',
+        'DRAFT' =>            'A draft receipt (default)',
+        'SUBMITTED' =>        'Receipt has been submitted as part of an expense claim',
         'DECLINED' =>         'Receipt has been declined in the Xero app'
       } unless defined?(RECEIPT_STATUS)
       RECEIPT_STATUSES = RECEIPT_STATUS.keys.sort
       
       set_primary_key :receipt_id
-      set_possible_primary_keys :receipt_id, :receipt_number
+      set_possible_primary_keys :receipt_id#, :receipt_number
       list_contains_summary_only true
       
       guid          :receipt_id
-      string        :receipt_number
+      string        :url
+#      int           :receipt_number
       string        :reference
       date          :date
       string        :status
-      #TODO: Add line_amount_types
-      #string        :line_amount_types
+      string        :line_amount_types
       decimal       :sub_total, :calculated => true
       decimal       :total_tax, :calculated => true
       decimal       :total, :calculated => true
@@ -51,7 +51,7 @@ module Xeroizer
       belongs_to    :contact
       has_many      :line_items
       
-      validates_inclusion_of :status, :in => RECEIPT_STATUSES, :allow_blanks => true
+#      validates_inclusion_of :status, :in => RECEIPT_STATUSES, :allow_blanks => true
       validates_associated :contact
       validates_associated :line_items
       
