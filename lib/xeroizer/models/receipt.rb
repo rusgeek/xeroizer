@@ -49,6 +49,7 @@ module Xeroizer
       datetime_utc  :updated_date_utc, :api_name => 'UpdatedDateUTC'
       
       belongs_to    :contact
+      belongs_to    :expense_claim
       has_many      :line_items
       
 #      validates_inclusion_of :status, :in => RECEIPT_STATUSES, :allow_blanks => true

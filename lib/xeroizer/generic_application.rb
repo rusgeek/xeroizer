@@ -24,6 +24,7 @@ module Xeroizer
     record :Organisation
     record :Payment
     record :Receipt
+    record :ExpenseClaim
     record :TaxRate
     record :TrackingCategory
     record :BankTransaction
