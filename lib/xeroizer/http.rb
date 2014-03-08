@@ -26,6 +26,7 @@ module Xeroizer
     # @param [String] url URL of request
     # @param [Hash] extra_params extra query string parameters.
     def http_get(client, url, extra_params = {})
+      puts "client=#{client}, url=#{url}"
       http_request(client, :get, url, nil, extra_params)
     end
 
