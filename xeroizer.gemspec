@@ -63,6 +63,7 @@ Gem::Specification.new do |s|
     "lib/xeroizer/models/organisation.rb",
     "lib/xeroizer/models/payment.rb",
     "lib/xeroizer/models/phone.rb",
+    "lib/xeroizer/models/receipt.rb",
     "lib/xeroizer/models/tax_rate.rb",
     "lib/xeroizer/models/tracking_category.rb",
     "lib/xeroizer/models/tracking_category_child.rb",

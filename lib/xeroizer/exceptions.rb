@@ -59,6 +59,10 @@ module Xeroizer
 
   class CreditNoteNotFoundError < StandardError; end
   
+  class ReceiptNotFoundError < StandardError; end
+  
+  class ExpenseClaimNotFoundError < StandardError; end
+  
   class MethodNotAllowed < StandardError
     
     def initialize(klass, method)
