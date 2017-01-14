@@ -32,7 +32,15 @@ class OAuthTest < Test::Unit::TestCase
         @client.Organisation.first
       end
     end
+
+    should "handle nonce used" do
+      Xeroizer::OAuth.any_instance.stubs(:get).returns(stub(:plain_body => get_file_as_string("nonce_used"), :code => "401"))
       
+      assert_raises Xeroizer::OAuth::NonceUsed do
+        @client.Organisation.first
+      end
+    end
+
     should "raise rate limit exceeded" do
       Xeroizer::OAuth.any_instance.stubs(:get).returns(stub(:plain_body => get_file_as_string("rate_limit_exceeded"), :code => "401"))
       
@@ -65,7 +73,18 @@ class OAuthTest < Test::Unit::TestCase
         auto_rate_limit_client.Organisation.first
       end
     end
-      
+
+    should "retry nonce_used failures a configurable number of times" do
+      nonce_used_client = Xeroizer::PublicApplication.new(CONSUMER_KEY, CONSUMER_SECRET, :nonce_used_max_attempts => 4)
+      Xeroizer::OAuth.any_instance.stubs(:get).returns(stub(:plain_body => get_file_as_string("nonce_used"), :code => "401"))
+
+      nonce_used_client.expects(:sleep_for).with(1).times(4).returns(1)
+
+      assert_raises Xeroizer::OAuth::NonceUsed do
+        nonce_used_client.Organisation.first
+      end
+    end
+
     should "handle unknown errors" do
       Xeroizer::OAuth.any_instance.stubs(:get).returns(stub(:plain_body => get_file_as_string("bogus_oauth_error"), :code => "401"))
       
@@ -75,7 +94,8 @@ class OAuthTest < Test::Unit::TestCase
     end
     
     should "handle ApiExceptions" do
-      Xeroizer::OAuth.any_instance.stubs(:put).returns(stub(:plain_body => get_file_as_string("api_exception.xml"), :code => "400"))
+      Xeroizer::OAuth.any_instance.stubs(:put).returns(stub(:plain_body => get_file_as_string("api_exception.xml"),
+          :code => "400"))
       
       assert_raises Xeroizer::ApiException do
         contact = @client.Contact.build(:name => 'Test Contact')
@@ -84,7 +104,8 @@ class OAuthTest < Test::Unit::TestCase
     end
     
     should "handle random root elements" do
-      Xeroizer::OAuth.any_instance.stubs(:put).returns(stub(:plain_body => "<RandomRootElement></RandomRootElement>", :code => "200"))
+      Xeroizer::OAuth.any_instance.stubs(:put).returns(stub(:plain_body => "<RandomRootElement></RandomRootElement>",
+          :code => "200"))
       
       assert_raises Xeroizer::UnparseableResponse do
         contact = @client.Contact.build(:name => 'Test Contact')
