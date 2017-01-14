@@ -76,8 +76,6 @@ module Xeroizer
   
   class ExpenseClaimNotFoundError < StandardError; end
   
-  class MethodNotAllowed < StandardError
-  
   class MethodNotAllowed < XeroizerError
     
     def initialize(klass, method)
@@ -161,3 +159,4 @@ module Xeroizer
   end
   
 end
+

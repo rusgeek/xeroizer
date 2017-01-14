@@ -20,7 +20,7 @@ module Xeroizer
       set_permissions :read
 
       def attach_data(url, id, filename, data, content_type, options = {})
-        options = { include_online: false }.merge(options)
+        options = { :include_online=> false }.merge(options)
 
         response_xml = @application.http_put(@application.client,
                                               "#{url}/#{CGI.escape(id)}/Attachments/#{CGI.escape(filename)}",

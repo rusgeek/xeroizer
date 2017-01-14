@@ -128,7 +128,7 @@ module Xeroizer
           end
 
           def association_to_xml(association_name)
-            builder = Builder::XmlMarkup.new(indent: 2)
+            builder = Builder::XmlMarkup.new(:indent=> 2)
             records = send(association_name)
 
             optional_root_tag(association_name.to_s.camelize, builder) do |b|
